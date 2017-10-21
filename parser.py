@@ -50,7 +50,8 @@ def parse(i):
     lexemes = lex(i)
     currentIndex = 0
 
-    def valOrDefault(obj, prop, default=[]):
+    def valOrDefault(obj, prop, default=None):
+        if default == None: default = []
         if prop in obj:
             return obj[prop]
         else:
@@ -71,21 +72,35 @@ def parse(i):
         if takeFunc == None: takeFunc = lambda: match(whileType)
         if extendFunc == None: extendFunc = lambda: genList(whileType, takeFunc)
         if check(whileType):
-            return [takeFunc()] + extendFunc()
+            take = [takeFunc()]
+            extend = extendFunc()
+            return take + extend if len(extend) > 0 else take
         else:
             return []
 
     def joinList(whileType, delimeter=' '):
         return delimeter.join(genList(whileType))
 
-    def obj(objType, members, o={}):
+    def obj(objType, members, o=None):
+        if o == None: o = {}
         for member in members:
+            nones()
             if check(objType + '.' + member):
-                valOrDefault(o, member).append(joinList(objType + '.' + member))
+                take = joinList(objType + '.' + member)
+                if len(take) > 0:
+                    valOrDefault(o, member).append(take)
+            nones()
         if check(objType):
             return obj(objType, members, o)
         else:
             return o
+
+    def checkAndValOrDefaultWith(o, checkType, do):
+        if check(checkType):
+            val = valOrDefault(o, checkType)
+            it = do()
+            if len(it) > 0:
+                val.append(it)
 
     def nones():
         return joinList('none')
@@ -111,17 +126,25 @@ def parse(i):
     def certification():
         return obj('certification', ['description', 'time', 'title'])
 
-    def resume(o={}):
-        valOrDefault(o, 'header').append(header())
-        valOrDefault(o, 'experience').append(experience())
-        valOrDefault(o, 'education').append(education())
-        valOrDefault(o, 'certification').append(certification())
-        valOrDefault(o, 'skills').append(skills())
-        valOrDefault(o, 'extra').append(extra())
+    def resume(o=None):
+        if o == None: o = {}
+        lastIndex = currentIndex
+        checkAndValOrDefaultWith(o, 'header', lambda: header())
+        checkAndValOrDefaultWith(o, 'experience', lambda: experience())
+        checkAndValOrDefaultWith(o, 'education', lambda: education())
+        checkAndValOrDefaultWith(o, 'certification', lambda: certification())
+        checkAndValOrDefaultWith(o, 'skills', lambda: skills())
+        checkAndValOrDefaultWith(o, 'extra', lambda: extra())
         nones()
-        if currentIndex < len(lexemes):
+        if currentIndex < len(lexemes) and lastIndex != currentIndex:
             return resume(o)
         else:
             return o
 
     return resume()
+
+def parseAndWrite(i):
+    parsed = parse(i)
+    with open(str(i) + '.json', 'w') as f:
+        json.dump(parsed, f)
+    return parsed
