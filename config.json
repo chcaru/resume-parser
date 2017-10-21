@@ -1,0 +1,41 @@
+{
+    "glove": "./data/glove/glove.840B.300d.txt",
+    "weights": "./weights/v{version}-b{batchSize}-e{epoch}-a{accuracy}-l{loss}.weights.h5",
+    "version": "1",
+    "data": {
+        "source": {
+            "resumes": "C:\\ms\\resume-parser\\vm\\slave\\resumes"
+        },
+        "prep": {
+            "wordVectorVocab": "./data/glove/word-vector-vocab.npy",
+            "wordVectors": "./data/glove/word-vectors.npy",
+            "loaded": "./data/prep/resumes.npy",
+            "text": "./data/prep/resumes.text.npy",
+            "cleaned": "./data/prep/resumes.clean.text.npy",
+            "indexed": "./data/prep/resumes.indexed.text.npy",
+            "labeled": "./data/prep/resumes.labeled.text.npy",
+            "dataXIndexed": "./data/prep/dataX.indexed.npy",
+            "dataYIndexed": "./data/prep/dataY.indexed.npy"
+        },
+        "vocab": "./data/prep/vocab.v1.{vocabSize}.txt",
+        "embeddingMatrix": "./data/embedding-matrix.v1.{vocabSize}.npy",
+        "dataXPosts": "./data/prep/x.{vocabSize}.v1.posts.data.npy",
+        "dataXWordFragments": "./data/dataX.words.npy",
+        "dataXPositionFragments": "./data/dataX.positions.npy",
+        "dataYCategories": "./data/dataY.categories.npy",
+        "dataIndices": "./data/data.indices.npy",
+        "v2": {
+            "dataXWordFragments": "./data/v2/dataX.words.npy",
+            "dataXPredictionFragments": "./data/v2/dataX.predictions.npy",
+            "dataXPositionFragments": "./data/v2/dataX.positions.npy",
+            "dataYCategories": "./data/v2/dataY.categories.npy"
+        }
+    },
+    "model": {
+        "vocabSize": 75000,
+        "wordVectorSize": 300,
+        "bufferSize": 16,
+        "sequenceStep": 1,
+        "maxResumeTokenCount": 30000
+    }
+}

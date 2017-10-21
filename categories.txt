@@ -1,0 +1,22 @@
+0 none
+1 certification.description
+2 certification.time
+3 certification.title
+4 education.location
+5 education.school
+6 education.time
+7 education.title
+8 experience.company
+9 experience.description
+10 experience.location
+11 experience.time
+12 experience.title
+13 extra.text
+14 header.elegibility
+15 header.location
+16 header.subtitle
+17 header.summary
+18 header.title
+19 skill.text
+
+19 link.href
